@@ -1,23 +1,28 @@
-import { useState } from "react";
 import { Task } from "@/models/TaskModel";
 
-export const useTaskController = () => {
-  const [tasks, setTasks] = useState<Task[]>([
+export class TaskController {
+  tasks: Task[] = [
     { id: 1, title: "Belajar React Native", completed: false },
     { id: 2, title: "Implementasi MVC", completed: false },
-  ]);
+  ];
 
-  const addTask = (title: string) => {
-    setTasks([...tasks, { id: tasks.length + 1, title, completed: false }]);
-  };
+  getTasks(): Task[] {
+    return this.tasks;
+  }
 
-  const toggleTask = (id: number) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
+  addTask(title: string) {
+    const newTask: Task = {
+      id: this.tasks.length + 1,
+      title,
+      completed: false,
+    };
+    this.tasks.push(newTask);
+  }
+
+  toggleTask(id: number) {
+    console.log("toggleTask", id);
+    this.tasks = this.tasks.map((task) =>
+      task.id === id ? { ...task, completed: !task.completed } : task
     );
-  };
-
-  return { tasks, addTask, toggleTask };
-};
+  }
+}

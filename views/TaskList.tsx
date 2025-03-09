@@ -1,10 +1,22 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { View, FlatList, StyleSheet, SafeAreaView } from "react-native";
 import { TextInput, Button, Card, Text, Appbar } from "react-native-paper";
-import { useTaskController } from "../controllers/TaskController";
+import { TaskController } from "@/controllers/TaskController";
 
 const TaskList = () => {
-  const { tasks, addTask, toggleTask } = useTaskController();
+  const taskController = useRef(new TaskController());
+  const [tasks, setTasks] = useState(taskController.current.getTasks());
+
+  const addTask = (title: string) => {
+    taskController.current.addTask(title);
+    setTasks([...taskController.current.getTasks()]);
+  };
+
+  const toggleTask = (id: number) => {
+    taskController.current.toggleTask(id);
+    setTasks([...taskController.current.getTasks()]);
+  };
+
   const [text, setText] = useState("");
 
   return (
